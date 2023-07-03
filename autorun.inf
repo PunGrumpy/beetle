@@ -1,4 +1,4 @@
 [autorun]
 open=run_all.bat
-icon=%SystemRoot%\system32\SHELL32.dll,4
+icon=beetle.ico
 label=Beetle

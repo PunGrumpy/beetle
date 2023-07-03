@@ -64,6 +64,17 @@ def select_usb_drive(usb_drives):
             print('Invalid choice')
 
 
+def clear_usb_drive(usb_drive):
+    try:
+        for root, dirs, files in os.walk(usb_drive):
+            for file in files:
+                os.remove(os.path.join(root, file))
+            for dir in dirs:
+                shutil.rmtree(os.path.join(root, dir))
+    except Exception as e:
+        print(f'Failed to clear {usb_drive}: {e}')
+
+
 def compile_cpp_scripts():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     cpp_file = os.path.join(script_dir, 'complier', 'CompileAllFiles.cpp')
@@ -83,6 +94,7 @@ def compile_cpp_scripts():
 def copy_files_to_usb(usb_drive):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     source_files = [
+        os.path.join(script_dir, 'beetle.ico'),
         os.path.join(script_dir, 'run_all.bat'),
         os.path.join(script_dir, 'autorun.inf')
     ]
@@ -109,6 +121,13 @@ def main():
             return
 
         usb_drive = select_usb_drive(usb_drives)
+
+        print(f'\n{YELLOW}WARNING: This will clear all files from {usb_drive}{END}')
+        confirm = pyip.inputYesNo(prompt='Continue? [yes/no]: ')
+        if confirm == 'no':
+            return
+
+        clear_usb_drive(usb_drive)
 
         compile_cpp_scripts()
 
