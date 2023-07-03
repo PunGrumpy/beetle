@@ -1,2 +1,6 @@
 # VSCode
 .vscode
+
+# Environment
+.venv
+.env*

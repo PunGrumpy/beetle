@@ -5,6 +5,7 @@ import subprocess
 import win32api
 import win32file
 
+
 def find_usb_drives():
     drives = win32api.GetLogicalDriveStrings()
     drives = drives.split('\000')[:-1]
@@ -16,6 +17,7 @@ def find_usb_drives():
             usb_drives.append(drive)
 
     return usb_drives
+
 
 def compile_cpp_scripts():
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -31,6 +33,7 @@ def compile_cpp_scripts():
     finally:
         if os.path.exists('compile.exe'):
             os.remove('compile.exe')
+
 
 def copy_files_to_usb(usb_drive):
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -50,13 +53,16 @@ def copy_files_to_usb(usb_drive):
     except Exception as e:
         print(f'Failed to copy files to {usb_drive}: {e}')
 
+
 def main():
     compile_cpp_scripts()
 
     usb_drives = find_usb_drives()
+    print(f'USB drives found: {usb_drives}')
 
     for usb_drive in usb_drives:
         copy_files_to_usb(usb_drive)
+
 
 if __name__ == '__main__':
     main()
