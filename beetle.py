@@ -4,6 +4,37 @@ import string
 import subprocess
 import win32api
 import win32file
+import pyinputplus as pyip
+
+
+RED = '\033[91m'
+GREEN = '\033[92m'
+YELLOW = '\033[93m'
+BLUE = '\033[94m'
+END = '\033[0m'
+
+
+def banner():
+    beetle = fr'''{GREEN}
+                           m
+   $m                mm            m
+    "$mmmmm        m$"    mmmmmmm$"
+          """$m   m$    m$""""""
+        mmmmmmm$$$$$$$$$"mmmm
+  mmm$$$$$$$$$$$$$$$$$$ m$$$$m  "    m  "
+$$$$$$$$$$$$$$$$$$$$$$  $$$$$$"$$$
+ mmmmmmmmmmmmmmmmmmmmm  $$$$$$$$$$
+ $$$$$$$$$$$$$$$$$$$$$  $$$$$$$"""  m
+ "$$$$$$$$$$$$$$$$$$$$$ $$$$$$  "      "
+     """""""$$$$$$$$$$$m """"
+       mmmmmmmm"  m$   "$mmmmm
+     $$""""""      "$     """"""$$
+   m$"               "m           "$m{END}
+
+            {RED}Beetle v1.0{END}
+    '''
+
+    print(beetle)
 
 
 def find_usb_drives():
@@ -17,6 +48,20 @@ def find_usb_drives():
             usb_drives.append(drive)
 
     return usb_drives
+
+
+def select_usb_drive(usb_drives):
+    while True:
+        try:
+            print('Available USB drives:')
+            for i, usb_drive in enumerate(usb_drives):
+                print(f' {GREEN}{i+1}. {usb_drive}{END}')
+
+            choice = pyip.inputInt(
+                prompt='\nSelect a USB drive: ', min=1, max=len(usb_drives))
+            return usb_drives[choice - 1]
+        except pyip.RetryLimitException or pyip.TimeoutException:
+            print('Invalid choice')
 
 
 def compile_cpp_scripts():
@@ -55,13 +100,23 @@ def copy_files_to_usb(usb_drive):
 
 
 def main():
-    compile_cpp_scripts()
+    try:
+        banner()
 
-    usb_drives = find_usb_drives()
-    print(f'USB drives found: {usb_drives}')
+        usb_drives = find_usb_drives()
+        if len(usb_drives) == 0:
+            print('No USB drives found')
+            return
 
-    for usb_drive in usb_drives:
+        usb_drive = select_usb_drive(usb_drives)
+
+        compile_cpp_scripts()
+
         copy_files_to_usb(usb_drive)
+
+    except KeyboardInterrupt:
+        print('\nExiting...')
+        return
 
 
 if __name__ == '__main__':
