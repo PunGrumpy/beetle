@@ -1,4 +1,4 @@
-<h1 align="center"><code>🔌</code> Beetle</h1>
+<h1 align="center"><code>🐞</code> Beetle</h1>
 <div align="center">
     <img src="./.github/assets/beetle.gif" width="256px" alt="Beetle logo" />
 </div>
