@@ -1,6 +1,6 @@
 <h1 align="center"><code>🔌</code> Beetle</h1>
 <div align="center">
-    <img src="./.github/assets/beetle.gif" width="200px" alt="Beetle logo" />
+    <img src="./.github/assets/beetle.gif" width="320px" alt="Beetle logo" />
 </div>
 
 ## `📝` Description
